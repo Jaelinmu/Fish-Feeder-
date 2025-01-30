@@ -30,9 +30,10 @@ void loop() {
   theHour = myRTC.getHour(h12, hPM);
   theMinute = myRTC.getMinute();
   theSecond = myRTC.getSecond();
-  Serial.println(theHour);
-  Serial.print(theMinute);
-  Serial.print(theSecond);
+  
+  char time_buffer[20];
+  sprintf(time_buffer, "Time: %02d:%02d:%02d", theHour, theMinute, theSecond);
+  Serial.println(time_buffer);
 
   if (theHour == 1 && theMinute == 38){
     myservo.write(180);
