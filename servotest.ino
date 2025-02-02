@@ -8,12 +8,13 @@ DS3231 myRTC;
 
 int stop = 90;
 
+// clock setup
+
 byte theHour;
 byte theMinute;
 byte theSecond;
 
 // alarm setup 
-// might be able to combine variables later but keeping them separate for now
 
 bool alarmH12;
 byte alarmHour;
@@ -32,13 +33,15 @@ void setup() {
 
   // alarm setup
 
-  alarmH12 = false;
-  alarmHour = 13;
-  alarmMinute = 38;
-  alarmBits = 0b00001110;
+  alarmH12 = false; // 24 hr format (true for 12hr)
+  alarmHour = 13; // alarm hour
+  alarmMinute = 38; // alarm minute
+  alarmBits = 0b00001110; // this allows our alarm to function during the exact hour and minute (i think)
 
-  myRTC.setA1Time(0, alarmHour, alarmMinute, alarmBits, alarmH12, alarmPM);
-  myRTC.turnOnAlarm(1);
+  myRTC.setA1Time(0, alarmHour, alarmMinute, alarmBits, alarmH12, alarmPM); // sets alarm
+  myRTC.turnOnAlarm(1); // turns alarm on :D
+  // i think this allows it so our alarm will activate everyday but not sure lol
+
 }
 
 void loop() {
@@ -46,6 +49,7 @@ void loop() {
   theMinute = myRTC.getMinute();
   theSecond = myRTC.getSecond();
   
+  // nice time output
   char time_buffer[20];
   sprintf(time_buffer, "Time: %02d:%02d:%02d", theHour, theMinute, theSecond);
   Serial.println(time_buffer);
@@ -56,7 +60,7 @@ void loop() {
     myservo.write(stop);
     delay(5000);
 
-    myRTC.clearAlarm(1);
+    myRTC.clearAlarm(1); // bascially turns off alarm so it wont repeat
   }
 
   /*
