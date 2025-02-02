@@ -61,7 +61,7 @@ void loop() {
 
   /*
    * old condiiton:
-
+   *
    * if (theHour == 1 && theMinute == 38){
    *    myservo.write(180);
    *    delay (5000);
@@ -71,6 +71,7 @@ void loop() {
    * else {
    *    myservo.write(stop);
    * }
+   *
    */
 
   delay(1000);
