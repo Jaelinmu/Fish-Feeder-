@@ -14,6 +14,9 @@ byte theHour;
 byte theMinute;
 byte theSecond;
 
+bool h12;
+bool hPM;
+
 // alarm setup 
 
 bool alarmH12;
@@ -38,14 +41,14 @@ void setup() {
   alarmMinute = 38; // alarm minute
   alarmBits = 0b00001110; // this allows our alarm to function during the exact hour and minute (i think)
 
-  myRTC.setA1Time(0, alarmHour, alarmMinute, alarmBits, alarmH12, alarmPM); // sets alarm
+  myRTC.setA1Time(0, alarmHour, alarmMinute, 0, alarmBits, false, alarmH12, alarmPM); // sets alarm
   myRTC.turnOnAlarm(1); // turns alarm on :D
   // i think this allows it so our alarm will activate everyday but not sure lol
 
 }
 
 void loop() {
-  theHour = myRTC.getHour(alarmH12);
+  theHour = myRTC.getHour(h12, hPM);
   theMinute = myRTC.getMinute();
   theSecond = myRTC.getSecond();
   
@@ -60,7 +63,7 @@ void loop() {
     myservo.write(stop);
     delay(5000);
 
-    myRTC.clearAlarm(1); // bascially turns off alarm so it wont repeat
+    myRTC.turnOffAlarm(1);
   }
 
   /*
