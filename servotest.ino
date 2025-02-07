@@ -25,20 +25,22 @@ bool alarmPM;
 byte alarmMinute;
 byte alarmBits;
 
+bool alarmTrigger = false;
+
 void setup() {
   Wire.begin();
   Serial.begin(9600);
   myservo.attach(2);
   myservo.write(stop);
-  myRTC.setHour(1);
-  myRTC.setMinute(37);
+  myRTC.setHour(0);
+  myRTC.setMinute(0);
   myRTC.setClockMode(false);
 
   // alarm setup
 
   alarmH12 = false; // 24 hr format (true for 12hr)
-  alarmHour = 13; // alarm hour
-  alarmMinute = 38; // alarm minute
+  alarmHour = 0; // alarm hour
+  alarmMinute = 1; // alarm minute
   alarmBits = 0b00001110; // this allows our alarm to function during the exact hour and minute (i think)
 
   myRTC.setA1Time(0, alarmHour, alarmMinute, 0, alarmBits, false, alarmH12, alarmPM); // sets alarm
@@ -57,13 +59,20 @@ void loop() {
   sprintf(time_buffer, "Time: %02d:%02d:%02d", theHour, theMinute, theSecond);
   Serial.println(time_buffer);
 
-  if (myRTC.checkIfAlarm(1)) {
-    myservo.write(100);
-    delay(5000);
+  if (myRTC.checkIfAlarm(1) && !alarmTrigger) {
+    Serial.println(myRTC.checkIfAlarm(1));
+    myservo.write(180);
+    delay(18000);
     myservo.write(stop);
     delay(5000);
 
     myRTC.turnOffAlarm(1);
+    Serial.println(myRTC.checkIfAlarm(1));
+    alarmTrigger = true;
+
+  if (theHour == 0 && theMinute == 0 && theSecond == 0) {
+      alarmTrigger = false;
+    }
   }
 
   /*
@@ -84,7 +93,3 @@ void loop() {
   delay(1000);
 
 }
-
-
-
-
