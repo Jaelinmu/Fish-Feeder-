@@ -24,7 +24,8 @@ void loop () {
     duration = pulseIn(echoPin, HIGH);
     distance = (duration*.0343)/2;  // this is in cm
 
-    Serial.println("Distance: ", distance);  
+    Serial.println("Distance: ");
+    Serial.print(distance);  
     /*
 
     if (distance >= [some value idk]) {
@@ -34,7 +35,7 @@ void loop () {
 
     */
 
-	delay(100);  
+    delay(100);  
 
 
 }
